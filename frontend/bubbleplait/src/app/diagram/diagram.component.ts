@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Network, DataSet } from 'vis';
+import { Link } from './model/link';
+import { Node } from './model/node';
 
 
 
@@ -12,33 +14,49 @@ export class DiagramComponent implements OnInit, AfterViewInit {
   @ViewChild('network') el: ElementRef;
   private networkInstance: any;
 
-  constructor() { }
+  // Data Model
+  private _nodeList: Node[];
+  private _linkList: Link[];
 
-  ngOnInit(): void {
-    console.log("ngOnInit()");
+  constructor() {
+    this._nodeList = [];
+    this._linkList = [];
   }
 
-  ngAfterViewInit() {
-    console.log("ngAfterViewInit()");
+  ngOnInit(): void {
+    this.initDummyData();
+  }
 
+  ngAfterViewInit(): void {
+    this.displayNetwork();
+  }
+
+  private displayNetwork() {
     const container = this.el.nativeElement;
-    const nodes = new DataSet<any>([
-      { id: 1, label: 'Node 1' },
-      { id: 2, label: 'Node 2' },
-      { id: 3, label: 'Node 3' },
-      { id: 4, label: 'Node 4' },
-      { id: 5, label: 'Node 5' }
-    ]);
 
-    const edges = new DataSet<any>([
-      { from: 1, to: 3 },
-      { from: 1, to: 3 },
-      { from: 1, to: 2 },
-      { from: 2, to: 4 },
-      { from: 2, to: 5 }
-    ]);
+    let nodes = new DataSet<any>(this._nodeList);
+    let edges = new DataSet<Link>(this._linkList);
+
     const data = { nodes, edges };
 
     this.networkInstance = new Network(container, data, {});
+  }
+
+  private initDummyData(): void {
+    this._nodeList = [
+      new Node(1, "Node 1"),
+      new Node(2, 'Node 1'),
+      new Node(3, 'Node 1'),
+      new Node(4, 'Node 1'),
+      new Node(5, 'Node 1')
+    ];
+
+    this._linkList = [
+      new Link(1, 3),
+      new Link(1, 3),
+      new Link(1, 2),
+      new Link(2, 4),
+      new Link(2, 5)
+    ];
   }
 }
