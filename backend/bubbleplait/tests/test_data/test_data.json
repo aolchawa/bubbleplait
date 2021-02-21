@@ -1,0 +1,22 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "label": "node 1"
+        },
+        {
+            "id": 2,
+            "label": "node 2"
+        }
+    ],
+    "links": [
+        {
+            "from": 1,
+            "to": 2
+        },
+        {
+            "from": 2,
+            "to": 1
+        }
+    ]
+}

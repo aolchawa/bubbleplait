@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angula
 import { Network, DataSet } from 'vis';
 import { Link } from './model/link';
 import { Node } from './model/node';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -18,45 +18,48 @@ export class DiagramComponent implements OnInit, AfterViewInit {
   private _nodeList: Node[];
   private _linkList: Link[];
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this._nodeList = [];
     this._linkList = [];
   }
 
-  ngOnInit(): void {
-    this.initDummyData();
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.displayNetwork();
   }
 
   private displayNetwork() {
-    const container = this.el.nativeElement;
+    this.http.get('/diagram/').subscribe(response => {
+      const nodes_json = response["nodes"];
+      const links_json = response["links"];
 
-    let nodes = new DataSet<any>(this._nodeList);
-    let edges = new DataSet<Link>(this._linkList);
+      for (let node of nodes_json) {
+        const id = node['pk']
+        const label = node['fields']['label'];
+        this._nodeList.push(new Node(id, label));
+      }
+      console.log(this._nodeList);
 
-    const data = { nodes, edges };
+      for (let link of links_json) {
+        const node_from = link['fields']['node_from'];
+        const node_to = link['fields']['node_to'];
+        this._linkList.push(new Link(node_from, node_to));
+      }
+      console.log(this._linkList);
 
-    this.networkInstance = new Network(container, data, {});
+      const container = this.el.nativeElement;
+
+      let nodes = new DataSet<any>(this._nodeList);
+      let edges = new DataSet<Link>(this._linkList);
+
+      const data = { nodes, edges };
+
+      this.networkInstance = new Network(container, data, {});
+    });
+
+
+
   }
 
-  private initDummyData(): void {
-    this._nodeList = [
-      new Node(1, "Node 1"),
-      new Node(2, 'Node 1'),
-      new Node(3, 'Node 1'),
-      new Node(4, 'Node 1'),
-      new Node(5, 'Node 1')
-    ];
-
-    this._linkList = [
-      new Link(1, 3),
-      new Link(1, 3),
-      new Link(1, 2),
-      new Link(2, 4),
-      new Link(2, 5)
-    ];
-  }
 }

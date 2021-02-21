@@ -1,0 +1,1 @@
+curl -H "Content-Type: application/json" -X POST -d @./test_data/test_data.json http://localhost:8000/diagram/
