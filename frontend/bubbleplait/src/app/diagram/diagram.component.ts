@@ -39,26 +39,38 @@ export class DiagramComponent implements OnInit, AfterViewInit {
         const label = node['fields']['label'];
         this._nodeList.push(new Node(id, label));
       }
-      console.log(this._nodeList);
 
       for (let link of links_json) {
+        const id = link['pk']
         const node_from = link['fields']['node_from'];
         const node_to = link['fields']['node_to'];
-        this._linkList.push(new Link(node_from, node_to));
+        const label = link['fields']['label']
+        const arrows = link['fields']['arrows']
+        this._linkList.push(new Link(
+          id,
+          node_from,
+          node_to,
+          label,
+          arrows));
       }
-      console.log(this._linkList);
 
       const container = this.el.nativeElement;
 
-      let nodes = new DataSet<any>(this._nodeList);
+      let nodes = new DataSet<Node>(this._nodeList);
       let edges = new DataSet<Link>(this._linkList);
 
       const data = { nodes, edges };
 
-      this.networkInstance = new Network(container, data, {});
+      let options = {};
+
+      this.networkInstance = new Network(container, data, options);
+
+      for (let link of this._linkList) {
+        if (link.label == 'label1') {
+          this.networkInstance.body.data.edges.update({ id: link.id, color: { color: '#ff383f', highlight: '#ff383f' } });
+        }
+      }
     });
-
-
 
   }
 
