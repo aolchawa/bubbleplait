@@ -27,8 +27,11 @@ class DataApi(View):
 
         for link_json in data_json['links']:
             link = Link()
+            link.id = link_json['id']
+            link.label = link_json['label']
             link.node_from = Node.objects.get(id=link_json['from'])
             link.node_to = Node.objects.get(id=link_json['to'])
+            link.arrows = link_json['arrows']
             link.save()
 
         return JsonResponse({'status': 'ok'})

@@ -7,16 +7,44 @@
         {
             "id": 2,
             "label": "node 2"
+        },
+        {
+            "id": 3,
+            "label": "node 3"
+        },
+        {
+            "id": 4,
+            "label": "node 4"
         }
     ],
     "links": [
         {
+            "id": 1,
+            "label": "label1",
             "from": 1,
-            "to": 2
+            "to": 2,
+            "arrows": "to"
         },
         {
+            "id": 2,
+            "label": "label2",
             "from": 2,
-            "to": 1
+            "to": 1,
+            "arrows": "to"
+        },
+        {
+            "id": 3,
+            "label": "label1",
+            "from": 2,
+            "to": 3,
+            "arrows": "to"
+        },
+        {
+            "id": 4,
+            "label": "label1",
+            "from": 3,
+            "to": 4,
+            "arrows": "to"
         }
     ]
 }
