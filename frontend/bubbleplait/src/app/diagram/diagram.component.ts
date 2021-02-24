@@ -1,26 +1,31 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Network, DataSet } from 'vis';
+import { DiagramData } from './model/diagram-data';
 import { Link } from './model/link';
 import { Node } from './model/node';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { DiagramService } from './service/diagram.service';
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.css']
 })
-export class DiagramComponent implements OnInit, AfterViewInit {
+export class DiagramComponent implements OnInit, OnDestroy {
   @ViewChild('network') el: ElementRef;
-  private networkInstance: any;
 
-  // Data Model
-  private _nodeList: Node[];
-  private _linkList: Link[];
+  private _networkInstance: any;
 
-  constructor(private http: HttpClient) {
-    this._nodeList = [];
-    this._linkList = [];
+  private _diagramData$: Subscription;
+  private _diagramData: DiagramData;
+
+  private _highlightedRoute$: Subscription;
+
+  constructor(private _diagramService: DiagramService) {
+    this._diagramData$ = null;
+    this._highlightedRoute$ = this._diagramService.getHighlightedRoute$().subscribe(label => {
+      this.highlightRoute(label);
+    });
   }
 
   ngOnInit(): void { }
@@ -29,49 +34,49 @@ export class DiagramComponent implements OnInit, AfterViewInit {
     this.displayNetwork();
   }
 
+  ngOnDestroy(): void {
+    if (this._diagramData$ != null) {
+      this._diagramData$.unsubscribe();
+    }
+
+    if (this._highlightedRoute$ != null) {
+      this._highlightedRoute$.unsubscribe();
+    }
+  }
+
   private displayNetwork() {
-    this.http.get('/diagram/').subscribe(response => {
-      const nodes_json = response["nodes"];
-      const links_json = response["links"];
-
-      for (let node of nodes_json) {
-        const id = node['pk']
-        const label = node['fields']['label'];
-        this._nodeList.push(new Node(id, label));
-      }
-
-      for (let link of links_json) {
-        const id = link['pk']
-        const node_from = link['fields']['node_from'];
-        const node_to = link['fields']['node_to'];
-        const label = link['fields']['label']
-        const arrows = link['fields']['arrows']
-        this._linkList.push(new Link(
-          id,
-          node_from,
-          node_to,
-          label,
-          arrows));
-      }
+    this._diagramData$ = this._diagramService.getDiagramData$().subscribe(diagramData => {
+      this._diagramData = diagramData;
 
       const container = this.el.nativeElement;
 
-      let nodes = new DataSet<Node>(this._nodeList);
-      let edges = new DataSet<Link>(this._linkList);
+      let nodes = new DataSet<Node>(diagramData.nodes);
+      let edges = new DataSet<Link>(diagramData.links);
 
       const data = { nodes, edges };
 
-      let options = {};
-
-      this.networkInstance = new Network(container, data, options);
-
-      for (let link of this._linkList) {
-        if (link.label == 'label1') {
-          this.networkInstance.body.data.edges.update({ id: link.id, color: { color: '#ff383f', highlight: '#ff383f' } });
+      let options = {
+        edges: {
+          color: {
+            color: 'black',
+            highlight: 'black'
+          }
         }
-      }
-    });
+      };
 
+      this._networkInstance = new Network(container, data, options);
+    });
+    this._diagramService.retrieveData();
+  }
+
+  private highlightRoute(label: string): void {
+    for (let link of this._diagramData.links) {
+      if (link.label == label) {
+        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: '#ff383f', highlight: '#ff383f' } });
+      } else {
+        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'black', highlight: 'black' } });
+      }
+    }
   }
 
 }

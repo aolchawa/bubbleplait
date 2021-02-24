@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     imports: [
@@ -21,14 +22,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
         MatToolbarModule,
         MatIconModule,
         MatListModule,
-        MatCardModule,
-        MatTableModule,
-        MatPaginatorModule,
+        // MatCardModule,
+        // MatTableModule,
+        // MatPaginatorModule,
         MatSlideToggleModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        MatExpansionModule,
-        MatGridListModule
+        // MatProgressSpinnerModule,
+        // MatDialogModule,
+        // MatExpansionModule,
+        // MatGridListModule,
+        MatSelectModule
     ],
     exports: [
         MatButtonModule,
@@ -36,14 +38,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
         MatToolbarModule,
         MatIconModule,
         MatListModule,
-        MatCardModule,
-        MatTableModule,
-        MatPaginatorModule,
+        // MatCardModule,
+        // MatTableModule,
+        // MatPaginatorModule,
         MatSlideToggleModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        MatExpansionModule,
-        MatGridListModule
+        // MatProgressSpinnerModule,
+        // MatDialogModule,
+        // MatExpansionModule,
+        // MatGridListModule,
+        MatSelectModule
     ]
 })
 export class MaterialModule { }

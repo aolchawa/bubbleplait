@@ -1,14 +1,15 @@
 <mat-toolbar color="primary">
     <div>
-        <button mat-icon-button>
+        <!-- <button mat-icon-button (click)="onToggleSidenav()">
             <mat-icon>menu</mat-icon>
-        </button>
-        <button mat-button>
-            <mat-slide-toggle>Button1</mat-slide-toggle>
-        </button>
-        <button mat-button>
-            <mat-slide-toggle>Button2</mat-slide-toggle>
-        </button>
+        </button> -->
+        <mat-form-field>
+            <mat-select (selectionChange)="highlightRoute($event.value)">
+                <mat-option *ngFor="let link of getLinks()" [value]="link">
+                    {{ link }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
-    <span style="flex: 1 1 auto;"></span>
+    <!-- <span style="flex: 1 1 auto;"></span> -->
 </mat-toolbar>
