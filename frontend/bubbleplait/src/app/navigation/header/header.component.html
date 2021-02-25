@@ -3,13 +3,16 @@
         <!-- <button mat-icon-button (click)="onToggleSidenav()">
             <mat-icon>menu</mat-icon>
         </button> -->
+        <span>Connection: </span>
         <mat-form-field>
             <mat-select (selectionChange)="highlightRoute($event.value)">
+                <mat-option>None</mat-option>
                 <mat-option *ngFor="let link of getLinks()" [value]="link">
                     {{ link }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
-    <!-- <span style="flex: 1 1 auto;"></span> -->
+    <span style="flex: 1 1 auto;"></span>
+    <span>Bubble Plait</span>
 </mat-toolbar>

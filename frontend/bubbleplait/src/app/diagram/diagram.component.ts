@@ -58,14 +58,19 @@ export class DiagramComponent implements OnInit, OnDestroy {
       let options = {
         edges: {
           color: {
-            color: 'black',
-            highlight: 'black'
+            color: 'gray',
+            highlight: 'gray'
+          },
+          font: {
+            color: 'white',
+            strokeWidth: 0,
           }
         }
       };
 
       this._networkInstance = new Network(container, data, options);
     });
+    
     this._diagramService.retrieveData();
   }
 
@@ -74,7 +79,7 @@ export class DiagramComponent implements OnInit, OnDestroy {
       if (link.label == label) {
         this._networkInstance.body.data.edges.update({ id: link.id, color: { color: '#ff383f', highlight: '#ff383f' } });
       } else {
-        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'black', highlight: 'black' } });
+        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'gray', highlight: 'gray' } });
       }
     }
   }
