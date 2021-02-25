@@ -25,9 +25,9 @@ class DataApi(View):
             node.label = node_json['label']
             node.save()
 
-        for link_json in data_json['links']:
+        for idx, link_json in enumerate(data_json['links']):
             link = Link()
-            link.id = link_json['id']
+            link.id = idx
             link.label = link_json['label']
             link.node_from = Node.objects.get(id=link_json['from'])
             link.node_to = Node.objects.get(id=link_json['to'])

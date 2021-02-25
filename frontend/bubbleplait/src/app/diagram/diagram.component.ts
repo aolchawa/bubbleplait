@@ -65,6 +65,55 @@ export class DiagramComponent implements OnInit, OnDestroy {
             color: 'white',
             strokeWidth: 0,
           }
+        },
+        physics:{
+          enabled: true,
+          barnesHut: {
+            theta: 0.5,
+            gravitationalConstant: -100,
+            centralGravity: 0.0,
+            springLength: 95,
+            springConstant: 0.04,
+            damping: 1,
+            avoidOverlap: 0
+          },
+          forceAtlas2Based: {
+            theta: 0.5,
+            gravitationalConstant: -50,
+            centralGravity: 0.01,
+            springConstant: 0.08,
+            springLength: 100,
+            damping: 0.4,
+            avoidOverlap: 0
+          },
+          repulsion: {
+            centralGravity: 0.2,
+            springLength: 200,
+            springConstant: 0.05,
+            nodeDistance: 100,
+            damping: 0.09
+          },
+          hierarchicalRepulsion: {
+            centralGravity: 0.0,
+            springLength: 100,
+            springConstant: 0.01,
+            nodeDistance: 120,
+            damping: 0.09,
+            avoidOverlap: 0
+          },
+          maxVelocity: 50,
+          minVelocity: 0.1,
+          solver: 'barnesHut',
+          stabilization: {
+            enabled: true,
+            iterations: 1000,
+            updateInterval: 100,
+            onlyDynamicEdges: false,
+            fit: true
+          },
+          timestep: 0.5,
+          adaptiveTimestep: true,
+          wind: { x: 0, y: 0 }
         }
       };
 
@@ -76,10 +125,12 @@ export class DiagramComponent implements OnInit, OnDestroy {
 
   private highlightRoute(label: string): void {
     for (let link of this._diagramData.links) {
-      if (link.label == label) {
-        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: '#ff383f', highlight: '#ff383f' } });
+      if (label == null) {
+        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'gray', highlight: 'gray' }, hidden: false });        
+      } else if (link.label == label) {
+        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'red', highlight: 'red' }, hidden: false});
       } else {
-        this._networkInstance.body.data.edges.update({ id: link.id, color: { color: 'gray', highlight: 'gray' } });
+        this._networkInstance.body.data.edges.update({ id: link.id, hidden: true });
       }
     }
   }

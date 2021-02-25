@@ -63,8 +63,9 @@ export class DiagramService {
       const id = link['pk']
       const node_from = link['fields']['node_from'];
       const node_to = link['fields']['node_to'];
-      const label = link['fields']['label']
-      const arrows = link['fields']['arrows']
+      const label = link['fields']['label'];
+      const arrows = link['fields']['arrows'];
+
       links.push(new Link(
         id,
         node_from,
