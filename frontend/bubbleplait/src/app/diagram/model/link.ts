@@ -5,7 +5,5 @@ export class Link {
     public to: any,
     public label: string,
     public arrows: string,
-    // private physics: boolean = false,
-    // private smooth = { enabled: true, type: 'vertical'}
   ) { }
 }
