@@ -27,7 +27,7 @@ export class DiagramService {
   }
 
   public retrieveData() {
-    this._http.get('http://localhost:8000/diagram/').subscribe(response => {
+    this._http.get('/diagram/').subscribe(response => {
 
       const jsonNodes = response["nodes"];
       const jsonLinks = response["links"];
